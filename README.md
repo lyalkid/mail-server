@@ -32,7 +32,7 @@ exit     - Выйти
 Enter user name: Alice
 User 'Alice' added
 ```
-
+### Установка фильтра:
 ```
 > setfilter
 Enter user name: Bob
