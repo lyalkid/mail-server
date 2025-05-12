@@ -1,13 +1,12 @@
 package ru.hse.app;
 
+import java.util.*;
+import java.util.stream.Collectors;
 import ru.hse.filters.SpamFilter;
 import ru.hse.filters.impl.*;
 import ru.hse.model.Message;
 import ru.hse.model.User;
 import ru.hse.model.UserStorage;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class App {
     private static final Scanner input = new Scanner(System.in);
@@ -17,7 +16,8 @@ public class App {
         while (true) {
             System.out.print("> ");
             String command = input.nextLine().trim();
-            if (command.isEmpty()) continue;
+            if (command.isEmpty())
+                continue;
             switch (command) {
                 case "add":
                     handleAdd();
@@ -69,18 +69,17 @@ public class App {
     }
 
     private void handleSend() {
-
         String senderName = null;
         String receiverName = null;
         String caption = null;
         String text = null;
 
-
         while (true) {
             System.out.print("Enter sender name (or 'cancel'): ");
             senderName = input.nextLine().trim();
 
-            if (senderName.equalsIgnoreCase("cancel")) return;
+            if (senderName.equalsIgnoreCase("cancel"))
+                return;
             if (!userStorage.userExists(senderName)) {
                 System.out.println("Sender not found");
                 continue;
@@ -88,12 +87,12 @@ public class App {
             break;
         }
 
-
         while (true) {
             System.out.print("Enter receiver name (or 'cancel'): ");
             receiverName = input.nextLine().trim();
 
-            if (receiverName.equalsIgnoreCase("cancel")) return;
+            if (receiverName.equalsIgnoreCase("cancel"))
+                return;
             if (!userStorage.userExists(receiverName)) {
                 System.out.println("Receiver not found");
                 continue;
@@ -101,12 +100,12 @@ public class App {
             break;
         }
 
-
         while (true) {
             System.out.println("Caption (or 'cancel'):");
             caption = input.nextLine().trim();
 
-            if (caption.equalsIgnoreCase("cancel")) return;
+            if (caption.equalsIgnoreCase("cancel"))
+                return;
             if (caption.isEmpty()) {
                 System.out.println("Caption cannot be empty");
                 continue;
@@ -114,12 +113,12 @@ public class App {
             break;
         }
 
-
         while (true) {
             System.out.println("Text (or 'cancel'):");
             text = input.nextLine().trim();
 
-            if (text.equalsIgnoreCase("cancel")) return;
+            if (text.equalsIgnoreCase("cancel"))
+                return;
             if (text.isEmpty()) {
                 System.out.println("Text cannot be empty");
                 continue;
@@ -133,12 +132,12 @@ public class App {
         System.out.println("Message sent");
     }
 
-
     private void handleInbox() {
         while (true) {
             System.out.print("Enter user name (or 'cancel'): ");
             String userName = input.nextLine().trim();
-            if (userName.equalsIgnoreCase("cancel")) return;
+            if (userName.equalsIgnoreCase("cancel"))
+                return;
 
             User user = userStorage.getUserByName(userName);
             if (user == null) {
@@ -159,12 +158,12 @@ public class App {
         System.out.println("----------------------");
     }
 
-
     private void handleOutbox() {
         while (true) {
             System.out.print("Enter user name (or 'cancel'): ");
             String userName = input.nextLine().trim();
-            if (userName.equalsIgnoreCase("cancel")) return;
+            if (userName.equalsIgnoreCase("cancel"))
+                return;
 
             User user = userStorage.getUserByName(userName);
             if (user == null) {
@@ -183,12 +182,10 @@ public class App {
             System.out.print("Enter user name (or 'cancel' to exit): ");
             String userName = input.nextLine().trim();
 
-
             if (userName.equalsIgnoreCase("cancel")) {
                 System.out.println("Operation canceled");
                 return;
             }
-
 
             if (!userStorage.userExists(userName)) {
                 System.out.println("Error: User '" + userName + "' not found");
@@ -197,7 +194,6 @@ public class App {
 
             User user = userStorage.getUserByName(userName);
             List<Message> spamMessages = user.getSpam();
-
 
             System.out.println("\n=== Spam messages for " + userName + " ===");
             if (spamMessages.isEmpty()) {
@@ -216,7 +212,6 @@ public class App {
     }
 
     private void handleSetFilter() {
-
         String userName = null;
         while (true) {
             System.out.print("Enter user name (or 'cancel'): ");
@@ -237,7 +232,6 @@ public class App {
         User user = userStorage.getUserByName(userName);
         List<SpamFilter> filters = new ArrayList<>();
 
-
         System.out.println("\nAvailable filter types:");
         System.out.println("1. simple - messages containing 'spam'");
         System.out.println("2. keywords - messages with specific keywords");
@@ -245,11 +239,9 @@ public class App {
         System.out.println("4. sender - messages from specific sender");
         System.out.println("Enter 'done' to finish, 'cancel' to abort");
 
-        
         while (true) {
             System.out.print("\nSelect filter type: ");
             String filterType = input.nextLine().trim().toLowerCase();
-
 
             if (filterType.equals("done")) {
                 if (filters.isEmpty()) {
@@ -261,12 +253,10 @@ public class App {
                 return;
             }
 
-
             if (filterType.equals("cancel")) {
                 System.out.println("Operation canceled");
                 return;
             }
-
 
             switch (filterType) {
                 case "simple":
@@ -282,7 +272,7 @@ public class App {
 
                         if (inputLine.equalsIgnoreCase("cancel")) {
                             System.out.println("Keywords selection canceled");
-                            continue ;
+                            continue;
                         }
 
                         if (inputLine.isEmpty()) {
@@ -290,9 +280,8 @@ public class App {
                             continue;
                         }
 
-                        keywords = Arrays.stream(inputLine.split("\\s+"))
-                                .map(String::toLowerCase)
-                                .collect(Collectors.toSet());
+                        keywords =
+                            Arrays.stream(inputLine.split("\\s+")).map(String::toLowerCase).collect(Collectors.toSet());
                         break;
                     }
                     filters.add(new KeywordsSpamFilter(keywords));
@@ -307,7 +296,7 @@ public class App {
 
                         if (inputLine.equalsIgnoreCase("cancel")) {
                             System.out.println("Repetition filter canceled");
-                            continue ;
+                            continue;
                         }
 
                         try {
@@ -333,7 +322,7 @@ public class App {
 
                         if (senderName.equalsIgnoreCase("cancel")) {
                             System.out.println("Sender filter canceled");
-                            continue ;
+                            continue;
                         }
 
                         if (!userStorage.userExists(senderName)) {
