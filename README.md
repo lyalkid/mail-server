@@ -32,3 +32,19 @@ exit     - Выйти
 Enter user name: Alice
 User 'Alice' added
 ```
+
+```
+> setfilter
+Enter user name: Bob
+Available filter types:
+1. simple - messages containing 'spam'
+2. keywords - messages with specific keywords
+3. repetition - messages with repeated words
+4. sender - messages from specific sender
+Enter 'done' to finish, 'cancel' to abort
+
+Select filter type: keywords
+Enter keywords (space-separated): urgent important
+Added keywords filter: [urgent, important]
+Successfully set 1 filters
+```
